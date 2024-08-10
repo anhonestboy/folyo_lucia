@@ -1,15 +1,23 @@
-"use server";
-
 import { createEmailVerificationToken } from "@/helpers/createEmailVerificationToken";
 import { lucia } from "@/lib/auth";
 import { UserCollection } from "@/lib/db";
 import { generateIdFromEntropySize } from "lucia";
-import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server"
 
-export const signupAction = async (formData:FormData) => {
-    const email = formData.get("email") as string;
+export const POST = async (req:Request) => {
+    const {email} = await req.json()
 
     const userId = generateIdFromEntropySize(10);
+
+    const existingUser = await UserCollection.findOne({
+        email
+    })
+
+    if(existingUser) {
+        console.log("Email already in use");
+        return new NextResponse(JSON.stringify({succes:false, message:"Email already in use"}))
+    }
 
     await UserCollection.insertOne({
         _id: userId,
@@ -24,5 +32,7 @@ export const signupAction = async (formData:FormData) => {
 
     const session = await lucia.createSession(userId, {});
 	const sessionCookie = lucia.createSessionCookie(session.id);
-	return redirect("/verification-email-sent")
+    cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+
+    return new NextResponse(JSON.stringify({success:true, message:"Verification Email Sent"}))
 }

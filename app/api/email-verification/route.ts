@@ -24,9 +24,9 @@ export const POST = async (req:Request) => {
             }
         })
 
-        const session = await lucia.createSession(verificationToken.user_id, {});
-	    const sessionCookie = lucia.createSessionCookie(session.id);
-        cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+        // const session = await lucia.createSession(verificationToken.user_id, {});
+	    // const sessionCookie = lucia.createSessionCookie(session.id);
+        // cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
         return new NextResponse(JSON.stringify({success: true}));
     }
 

@@ -5,17 +5,19 @@ import { FormSuccess } from "@/components/shared/FormSuccess";
 import FormWrapper from "@/components/shared/FormWrapper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-const SignUpPage = () => {
+const SignInPage = () => {
   const [email, setEmail] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    setSuccess("");
+    setError("");
     e.preventDefault();
     try {
-      const res = await fetch("/api/sign-up", {
+      const res = await fetch("/api/sign-in", {
         method: "POST",
         body: JSON.stringify({ email }),
       });
@@ -29,13 +31,14 @@ const SignUpPage = () => {
       toast.error("Signup failed");
     }
   };
+
   return (
     <FormWrapper
-      title="Create an account"
+      title="Welcome"
       description="Please enter your email to continue"
       social
-      linkLabel="Already have an account?"
-      linkHref="/sign-in"
+      linkLabel="Don't have an account?"
+      linkHref="/sign-up"
     >
       <form className="space-y-4" onSubmit={submitHandler}>
         <Input
@@ -57,4 +60,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default SignInPage;
