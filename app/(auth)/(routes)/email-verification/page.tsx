@@ -19,7 +19,7 @@ const EmailVerificationPage = () => {
     const data = await res.json();
     if (data.success) {
       setIsEmailValid(true);
-      router.push("/profile");
+      router.push("/");
     }
   };
   useEffect(() => {
