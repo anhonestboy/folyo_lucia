@@ -30,7 +30,7 @@ const FormWrapper = ({
             phudu.className
           )}
         >
-          makemypage
+          Folyo
         </div>
         <div className="text-center space-y-2">
           <h2 className="text-3xl font-bold">{title}</h2>

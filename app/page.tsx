@@ -6,7 +6,7 @@ import { SignOutButton } from "@/components/SignOutButton";
 
 export default async function Home() {
   const { user } = await validateRequest();
-  console.log(user)
+
   if (!user) {
     return redirect("/sign-up");
   }
