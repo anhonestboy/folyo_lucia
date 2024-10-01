@@ -5,30 +5,51 @@ import { FormSuccess } from "@/components/shared/FormSuccess";
 import FormWrapper from "@/components/shared/FormWrapper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
-const SignInPage = () => {
+interface SignInResponse {
+  success: boolean;
+  message: string;
+  hasPortfolio: boolean;
+  username?: string;
+}
+
+export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-  const submitHandler = async (e) => {
+  const router = useRouter();
+
+  const submitHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
     setSuccess("");
     setError("");
-    e.preventDefault();
     try {
       const res = await fetch("/api/sign-in", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ email }),
       });
-      const data = await res.json();
-      if (data.success === true) {
+      const data: SignInResponse = await res.json();
+      if (data.success) {
         setSuccess(data.message);
+        // Wait for a short time to show the success message
+        setTimeout(() => {
+          if (data.hasPortfolio && data.username) {
+            router.push(`/${data.username}`);
+          } else {
+            router.push("/create-portfolio");
+          }
+        }, 1500);
       } else {
         setError(data.message);
       }
     } catch {
-      toast.error("Signup failed");
+      toast.error("Sign-in failed");
     }
   };
 
@@ -50,13 +71,11 @@ const SignInPage = () => {
           required
         />
         <Button type="submit" className="w-full">
-          Sign Up
+          Sign In
         </Button>
         {success && <FormSuccess message={success} />}
         {error && <FormError message={error} />}
       </form>
     </FormWrapper>
   );
-};
-
-export default SignInPage;
+}
