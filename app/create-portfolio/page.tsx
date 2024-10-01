@@ -1,3 +1,4 @@
+// app/create-portfolio/page.tsx
 "use client";
 
 import { FormError } from "@/components/shared/FormError";
@@ -5,7 +6,7 @@ import { FormSuccess } from "@/components/shared/FormSuccess";
 import FormWrapper from "@/components/shared/FormWrapper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -13,7 +14,28 @@ export default function CreatePortfolioPage() {
   const [username, setUsername] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    const checkExistingPortfolio = async () => {
+      try {
+        const res = await fetch("/api/check-portfolio");
+        const data = await res.json();
+        if (data.hasPortfolio) {
+          router.push(`/${data.username}`);
+        } else {
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error("Error checking portfolio:", error);
+        setError("Failed to check existing portfolio");
+        setIsLoading(false);
+      }
+    };
+
+    checkExistingPortfolio();
+  }, [router]);
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +63,10 @@ export default function CreatePortfolioPage() {
       toast.error("Failed to create portfolio");
     }
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <FormWrapper
