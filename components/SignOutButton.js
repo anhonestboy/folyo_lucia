@@ -15,9 +15,9 @@ export const handleSignOut = async () => {
   }
 };
 
-export function SignOutButton() {
+export function SignOutButton({className, variant}) {
   return (
-    <Button onClick={handleSignOut}>Sign Out</Button>
+    <Button onClick={handleSignOut} className={className} variant={variant}>Sign Out</Button>
   );
   
 }

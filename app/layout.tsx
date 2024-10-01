@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import Header from "@/components/Header";
+import { validateRequest } from "@/lib/auth";
 
 const inter = Bricolage_Grotesque({ subsets: ["latin"] });
 
@@ -11,11 +13,12 @@ export const metadata: Metadata = {
   description: "Your Portfolio",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { user } = await validateRequest();
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -25,6 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Header user={user} />
           {children}
         </ThemeProvider>
         <Toaster />
