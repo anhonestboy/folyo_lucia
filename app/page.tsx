@@ -1,16 +1,13 @@
 import { validateRequest } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import Home from "@/components/Home"
 
-
-export default async function Home() {
+export default async function HomePage() {
   const { user } = await validateRequest();
 
-  if (!user) {
-    return redirect("/sign-up");
-  }
+
   return (
     <main>
-      <h1>Hello World!</h1>
+      <Home user={user} />
     </main>
   );
 }

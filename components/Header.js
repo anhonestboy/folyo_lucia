@@ -1,3 +1,4 @@
+'use client'
 import Link from "next/link"
 import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -8,12 +9,38 @@ import {
 } from "@/components/ui/sheet"
 import { ModeToggle } from "@/components/shared/ModeToggle";
 import { SignOutButton } from "@/components/SignOutButton";
+import { useEffect, useState } from "react";
 
 export default function Header({ user }) {
+
   const menuItems = [
     { name: "About", href: "/explore" },
     { name: "Explore", href: "/explore" },
   ]
+
+  const [portfolio, setPortfolio] = useState(null);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const checkExistingPortfolio = async () => {
+      try {
+        const res = await fetch("/api/check-portfolio");
+        const data = await res.json();
+        if (data.hasPortfolio) {
+          setPortfolio(data.portfolioInfo)
+        } else {
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error("Error checking portfolio:", error);
+        setError("Failed to check existing portfolio");
+        setIsLoading(false);
+      }
+    };
+    checkExistingPortfolio();
+  }, [user]);
+
+
 
   return (
     <header className="bg-background">
@@ -31,6 +58,12 @@ export default function Header({ user }) {
               <ModeToggle />
             </div>
 
+            {portfolio &&
+              <Link href={`/${portfolio.username} `} className="text-xs uppercase tracking-widest text-muted-foreground hover:text-primary">
+                Portfolio
+              </Link>
+            }
+
             {menuItems.map((item) => (
               <Link
                 key={item.name}
@@ -40,6 +73,8 @@ export default function Header({ user }) {
                 {item.name}
               </Link>
             ))}
+
+
             {user &&
               <SignOutButton className="text-xs uppercase font-mono tracking-widest h-4 text-muted-foreground hover:text-primary" variant="ghost" />
             }

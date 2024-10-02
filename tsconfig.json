@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/(auth)/(routes)/sign-in/page.js", "app/(auth)/(routes)/email-verification/page.js", "app/api/sign-in/route.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/(auth)/(routes)/sign-in/page.js", "app/(auth)/(routes)/email-verification/page.js", "app/api/sign-in/route.ts", "helpers/getPortfolioInfo.js"],
   "exclude": ["node_modules"]
 }

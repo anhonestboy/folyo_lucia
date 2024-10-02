@@ -14,12 +14,14 @@ export async function GET() {
     const existingPortfolio = await PortfolioCollection.findOne({ userId: user.id });
 
     if (existingPortfolio) {
-      return NextResponse.json({ 
-        hasPortfolio: true, 
-        username: existingPortfolio.username 
+      return NextResponse.json({
+        hasPortfolio: true,
+        portfolioInfo: existingPortfolio
       });
     } else {
-      return NextResponse.json({ hasPortfolio: false });
+      return NextResponse.json({
+        hasPortfolio: false
+      });
     }
   } catch (error) {
     console.error("Error checking portfolio:", error);

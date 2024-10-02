@@ -1,23 +1,37 @@
+// components/SignOutButton.js (1-23)
 'use client'
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
+export const useSignOut = () => {
+  const router = useRouter();
 
-export const handleSignOut = async () => {
-  const response = await fetch("/api/sign-out", {
-    method: "POST",
-  });
+  return async function handleSignOut() {
+    try {
+      const response = await fetch("/api/sign-out", {
+        method: "POST",
+      });
 
-  if (response.ok) {
-    // Redirect to the sign-up page or any other desired page
-    console.log("Successfully signed out");
-  } else {
-    console.error("Failed to sign out");
-  }
+      if (response.ok) {
+        router.push("/");
+        console.log("Successfully signed out");
+      } else {
+        throw new Error("Failed to sign out");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return handleSignOut;
 };
 
-export function SignOutButton({className, variant}) {
+export function SignOutButton({ className, variant }) {
+  const handleSignOut = useSignOut();
+
   return (
-    <Button onClick={handleSignOut} className={className} variant={variant}>Sign Out</Button>
+    <Button onClick={handleSignOut} className={className} variant={variant}>
+      Sign Out
+    </Button>
   );
-  
 }

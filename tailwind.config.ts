@@ -73,14 +73,32 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "fadeIn": {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '100' },
+        },
+        "fadeInUp": {
+          "0%": {
+            opacity: '0',
+            transform: "translate3d(0, 10%, 0)",
+          },
+          "100%": {
+            opacity: '1',
+            transform: "translate3d(0, 0, 0)",
+          },
+        },
       },
       animation: {
+        "fadeIn": 'fadeIn 0.5s ease-in-out',
+        "fadeInUp": 'fadeInUp 0.5s ease-out',
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+  ],
 } satisfies Config
 
 export default config

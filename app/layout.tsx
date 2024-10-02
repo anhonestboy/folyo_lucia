@@ -24,7 +24,6 @@ const notoSerif = Noto_Serif_Display({
   variable: '--font-Noto-serif',
 })
 
-
 export const metadata: Metadata = {
   title: "Folyo",
   description: "Your Portfolio",
@@ -35,7 +34,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   const { user } = await validateRequest();
+  const userId = user?.id;
+
   return (
     <html lang="en" className={`${ibmPlexMono.variable} ${ibmPlexSans.variable} ${notoSerif.variable} font-sans`}>
       <body>

@@ -40,7 +40,7 @@ export default function SignInPage() {
         // Wait for a short time to show the success message
         setTimeout(() => {
           if (data.hasPortfolio && data.username) {
-            router.push(`/${data.username}`);
+            // router.push(`/${data.username}`);
           } else {
             router.push("/create-portfolio");
           }
