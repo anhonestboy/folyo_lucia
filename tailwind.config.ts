@@ -8,7 +8,7 @@ const config = {
     './components/**/*.{ts,tsx,js,jsx}',
     './app/**/*.{ts,tsx,js,jsx}',
     './src/**/*.{ts,tsx,js,jsx}',
-	],
+  ],
   prefix: "",
   theme: {
     container: {
@@ -19,6 +19,11 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-IBM-sans)"],
+        mono: ["var(--font-IBM-mono)"],
+        serif: ["var(--font-Noto-serif)"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

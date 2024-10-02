@@ -17,27 +17,12 @@ export default function Header({ user }) {
 
   return (
     <header className="bg-background">
-      <div className="container mx-auto px-4 py-4 w-full">
+      <div className="container mx-auto px-4 py-12 w-full">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2 self-start">
             <span className="sr-only">Folyo</span>
-            <svg
-              className="h-8 w-auto text-primary"
-              fill="none"
-              height="24"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              width="24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-              <path d="M3 6h18" />
-              <path d="m16 10-4 4-4-4" />
-            </svg>
-            <span className="text-xl font-bold">Folyo</span>
+            
+            <span className="text-xl font-sans">Folyo</span>
           </Link>
 
           <nav className="flex space-x-4 self-end">
@@ -50,16 +35,16 @@ export default function Header({ user }) {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-xs uppercase font-light tracking-widest text-muted-foreground hover:text-primary"
+                className="text-xs uppercase font-mono tracking-widest text-muted-foreground hover:text-primary"
               >
                 {item.name}
               </Link>
             ))}
             {user &&
-              <SignOutButton className="text-xs uppercase font-light tracking-widest h-4 text-muted-foreground hover:text-primary" variant="ghost" />
+              <SignOutButton className="text-xs uppercase font-mono tracking-widest h-4 text-muted-foreground hover:text-primary" variant="ghost" />
             }
             {!user &&
-              <Link href="/sign-in" className="text-xs uppercase font-light tracking-widest text-muted-foreground hover:text-primary">
+              <Link href="/sign-in" className="text-xs uppercase tracking-widest text-muted-foreground hover:text-primary">
                 Sign in
               </Link>
             }
