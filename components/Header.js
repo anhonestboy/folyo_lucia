@@ -14,8 +14,8 @@ import { useEffect, useState } from "react";
 export default function Header({ user }) {
 
   const menuItems = [
-    { name: "About", href: "/explore" },
     { name: "Explore", href: "/explore" },
+    { name: "About", href: "/about" },
   ]
 
   const [portfolio, setPortfolio] = useState(null);
@@ -81,6 +81,11 @@ export default function Header({ user }) {
             {!user &&
               <Link href="/sign-in" className="text-xs uppercase tracking-widest text-muted-foreground hover:text-primary">
                 Sign in
+              </Link>
+            }
+            {!user &&
+              <Link href="/sign-up" className="underline text-xs uppercase tracking-widest text-muted-foreground hover:text-primary">
+                Get started
               </Link>
             }
 

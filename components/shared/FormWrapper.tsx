@@ -23,7 +23,7 @@ const FormWrapper = ({
 }: FormWrapperProps) => {
   return (
     <div className="flex flex-col items-center justify-center h-full bg-background text-foreground">
-      <div className="max-w-md w-full space-y-6 p-6 rounded-lg shadow-lg bg-card text-card-foreground">
+      <div className="max-w-md w-full space-y-6 p-6 rounded-3xl shadow-lg bg-card text-card-foreground">
         <div
           className={cn(
             "text-5xl font-bold flex items-center justify-center gap-2 tracking-widest py-4",
