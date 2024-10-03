@@ -46,35 +46,10 @@ export default function CreatePortfolioPage() {
   console.log(username)
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isUsernameAvailable, setIsUsernameAvailable] = useState<boolean | null>(null);
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const router = useRouter();
-
-  // useEffect(() => {
-  //   const checkExistingPortfolio = async () => {
-  //     try {
-  //       const res = await fetch("/api/check-portfolio");
-  //       const data = await res.json();
-  //       console.log("data: ", data)
-  //       if (data.hasPortfolio) {
-  //         setHasPortfolio(true);
-  //         setIsLoading(false);
-  //         setUsername(data.portfolioInfo.username);
-  //         // router.push(`/${data.username}`);
-  //       } else {
-  //         setIsLoading(false);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error checking portfolio:", error);
-  //       setError("Failed to check existing portfolio");
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   checkExistingPortfolio();
-  // }, [router]);
-
 
   const checkUsernameAvailability = useCallback(async (username: string) => {
     if (!username) {
@@ -133,6 +108,7 @@ export default function CreatePortfolioPage() {
     setSuccess("");
     setError("");
     setIsSubmitting(true);
+    setIsLoading(true);
     try {
       const res = await fetch("/api/create-portfolio", {
         method: "POST",
@@ -145,10 +121,10 @@ export default function CreatePortfolioPage() {
       if (data.success) {
         setSuccess("Portfolio created successfully!");
         // Wait for a short time to show the success message
-        setTimeout(() => {
-          router.push(`/${username}`);
-        }, 1500);
+        router.push(`/${username}`);
+
       } else {
+        setIsLoading(false);
         setError(data.message || "Failed to create portfolio");
       }
     } catch {
@@ -166,18 +142,6 @@ export default function CreatePortfolioPage() {
       </div>
     );
   }
-
-
-
-  if (hasPortfolio) {
-    return (
-      <div className="flex flex-col justify-center items-center h-[calc(100vh-150px)] font-mono">
-        <p className="ml-4">Your portfolio page is already created.</p>
-        <Link href={`/${username}`} className="group">navigate to <span className="group-hover:underline">/{username}</span></Link>
-      </div>
-    );
-  }
-
 
   return (
     <div className="container mx-auto px-4 w-6/12 h-[calc(100vh-150px)] flex flex-col items-center justify-center">
