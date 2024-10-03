@@ -9,6 +9,7 @@ export default function Home({ user }) {
   const [portfolio, setPortfolio] = useState(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  
   useEffect(() => {
     const checkExistingPortfolio = async () => {
       try {
@@ -29,9 +30,9 @@ export default function Home({ user }) {
   }, [user]);
 
 
-  if (portfolio) {
-    router.push("/" + portfolio.username);
-  }
+  // if (portfolio) {
+  //   router.push("/" + portfolio.username);
+  // }
 
   if (user && !portfolio) {
     router.push("/create-portfolio");

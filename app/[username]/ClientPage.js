@@ -77,7 +77,9 @@ const MasonryGallery = ({ images }) => {
 };
 
 const ClientPage = () => {
-  const images = [
+  const [images, setImages] = useState([]);
+  useEffect(() => {
+  const originalImages = [
     { src: 'https://picsum.photos/id/1018/800/600', alt: 'Sample 1', width: 800, height: 600 },
     { src: 'https://picsum.photos/id/1015/600/800', alt: 'Sample 2', width: 600, height: 800 },
     { src: 'https://picsum.photos/id/1019/800/600', alt: 'Sample 3', width: 800, height: 600 },
@@ -109,6 +111,11 @@ const ClientPage = () => {
     { src: 'https://picsum.photos/id/1025/800/600', alt: 'Sample 9', width: 800, height: 600 },
     { src: 'https://picsum.photos/id/1026/600/800', alt: 'Sample 10', width: 600, height: 800 },
   ];
+
+  // Randomize the order of the images
+  const randomizedImages = originalImages.sort(() => Math.random() - 0.5);
+  setImages(randomizedImages);
+  }, []);
 
   return (
     <div className="w-screen mx-auto px-8 py-8 flex flex-col items-center space-y-8">

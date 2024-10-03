@@ -10,8 +10,10 @@ import {
 import { ModeToggle } from "@/components/shared/ModeToggle";
 import { SignOutButton } from "@/components/SignOutButton";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Header({ user }) {
+  const router = useRouter();
 
   const menuItems = [
     { name: "Explore", href: "/explore" },
@@ -41,14 +43,22 @@ export default function Header({ user }) {
     checkExistingPortfolio();
   }, [user]);
 
-  const [userLogged, setUserLogged] = useState(false);
-  useEffect(() => {
-    if (user) {
-      setUserLogged(true);
-    } else {
-      setUserLogged(false);
+  const handleSignOut = async () => {
+    try {
+      const response = await fetch("/api/sign-out", {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        router.push("/");
+        router.refresh(); // Force a refresh of the page
+      } else {
+        throw new Error("Failed to sign out");
+      }
+    } catch (error) {
+      console.error(error);
     }
-  }, [user]);
+  };
 
   return (
     <header className="bg-background">
@@ -56,18 +66,16 @@ export default function Header({ user }) {
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2 self-start">
             <span className="sr-only">Folyo</span>
-
             <span className="text-xl font-sans">Folyo</span>
           </Link>
 
           <nav className="flex space-x-4 self-end">
-
             <div className="mr-3">
               <ModeToggle />
             </div>
 
             {portfolio &&
-              <Link href={`/${portfolio.username} `} className="text-xs uppercase tracking-widest text-muted-foreground hover:text-primary">
+              <Link href={`/${portfolio.username}`} className="text-xs uppercase tracking-widest text-muted-foreground hover:text-primary">
                 Portfolio
               </Link>
             }
@@ -82,26 +90,25 @@ export default function Header({ user }) {
               </Link>
             ))}
 
-
-            {userLogged &&
-              <SignOutButton className="text-xs uppercase font-mono tracking-widest h-4 text-muted-foreground hover:text-primary" variant="ghost" />
-            }
-            {!userLogged &&
-              <Link href="/sign-in" className="text-xs uppercase tracking-widest text-muted-foreground hover:text-primary">
-                Sign in
-              </Link>
-            }
-            {!userLogged &&
-              <Link href="/sign-up" className="underline text-xs uppercase tracking-widest text-muted-foreground hover:text-primary">
-                Get started
-              </Link>
-            }
-
-
+            {user ? (
+              <Button
+                onClick={handleSignOut}
+                className="text-xs uppercase font-mono tracking-widest h-4 text-muted-foreground hover:text-primary"
+                variant="ghost"
+              >
+                Sign Out
+              </Button>
+            ) : (
+              <>
+                <Link href="/sign-in" className="text-xs uppercase tracking-widest text-muted-foreground hover:text-primary">
+                  Sign in
+                </Link>
+                <Link href="/sign-up" className="underline text-xs uppercase tracking-widest text-muted-foreground hover:text-primary">
+                  Get started
+                </Link>
+              </>
+            )}
           </nav>
-
-
-
         </div>
       </div>
     </header>
