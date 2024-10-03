@@ -1,4 +1,4 @@
-// db.js
+// db.ts
 import { Collection, MongoClient, ObjectId } from "mongodb";
 
 const client = new MongoClient(process.env.DATABASE_URL!);
@@ -20,19 +20,20 @@ export interface PortfolioDoc {
   createdAt: Date;
 }
 
-interface UserDoc {
+export interface UserDoc {
   _id: string;
   email: string;
   emailVerified: boolean;
+  hashedPassword: string;
 }
 
-interface SessionDoc {
+export interface SessionDoc {
   _id: string;
   expires_at: Date;
   user_id: string;
 }
 
-interface VerificationTokenDoc {
+export interface VerificationTokenDoc {
   _id: string;
   user_id: string;
   email: string;

@@ -18,7 +18,7 @@ export default async function CreatePortfolio() {
     if (existingPortfolio) {
       return (
         <main>
-          <RedirectToPortfolioPage username={existingPortfolio.username}/>
+          <RedirectToPortfolioPage username={existingPortfolio.username} />
         </main>
       );
     }

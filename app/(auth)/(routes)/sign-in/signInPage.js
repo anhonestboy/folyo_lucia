@@ -9,38 +9,38 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-interface SignInResponse {
-  success: boolean;
-  message: string;
-  hasPortfolio: boolean;
-  username?: string;
-}
-
 export default function SignInPage() {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const submitHandler = async (e: React.FormEvent) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     setSuccess("");
     setError("");
+
+    if (!email || !password) {
+      setError("Email and password are required");
+      return;
+    }
+
     try {
       const res = await fetch("/api/sign-in", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, password }),
       });
-      const data: SignInResponse = await res.json();
+      const data = await res.json();
       if (data.success) {
         setSuccess(data.message);
         // Wait for a short time to show the success message
         setTimeout(() => {
           if (data.hasPortfolio && data.username) {
-            // router.push(`/${data.username}`);
+            router.push(`/${data.username}`);
           } else {
             router.push("/create-portfolio");
           }
@@ -55,8 +55,8 @@ export default function SignInPage() {
 
   return (
     <FormWrapper
-      title="Welcome"
-      description="Please enter your email to continue"
+      title="Welcome back"
+      description="Please enter your email and password to continue"
       linkLabel="Don't have an account?"
       linkHref="/sign-up"
     >
@@ -67,6 +67,15 @@ export default function SignInPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email"
+          className="w-full"
+          required
+        />
+        <Input
+          name="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Enter your password"
           className="w-full"
           required
         />

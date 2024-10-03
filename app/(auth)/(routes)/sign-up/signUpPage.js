@@ -10,18 +10,33 @@ import { toast } from "sonner";
 
 const SignUpPage = () => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+
   const submitHandler = async (e) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    if (!email || !password) {
+      setError("Email and password are required");
+      return;
+    }
+
     try {
       const res = await fetch("/api/sign-up", {
         method: "POST",
-        body: JSON.stringify({ email }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
       if (data.success === true) {
         setSuccess(data.message);
+        setEmail("");
+        setPassword("");
       } else {
         setError(data.message);
       }
@@ -29,10 +44,11 @@ const SignUpPage = () => {
       toast.error("Signup failed");
     }
   };
+
   return (
     <FormWrapper
       title="Create an account"
-      description="Please enter your email to continue"
+      description="Please enter your email and password to continue"
       linkLabel="Already have an account?"
       linkHref="/sign-in"
     >
@@ -43,6 +59,15 @@ const SignUpPage = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email"
+          className="w-full"
+          required
+        />
+        <Input
+          name="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Enter your password"
           className="w-full"
           required
         />

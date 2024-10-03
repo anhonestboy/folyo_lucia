@@ -1,6 +1,5 @@
 // app/api/sign-in/route.ts
-import { createEmailVerificationToken } from "@/helpers/createEmailVerificationToken";
-import { lucia } from "@/lib/auth";
+import { lucia, verifyPassword } from "@/lib/auth";
 import { UserCollection, PortfolioCollection } from "@/lib/db";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
@@ -13,25 +12,38 @@ interface SignInResponse {
 }
 
 export async function POST(req: Request) {
-  const { email } = await req.json();
+  const { email, password } = await req.json();
 
-  const existingUser = await UserCollection.findOne({
-    email
-  });
-
-  if (!existingUser) {
+  if (!email || !password) {
     const response: SignInResponse = { 
       success: false, 
-      message: "Email not found!", 
+      message: "Email and password are required", 
       hasPortfolio: false 
     };
     return NextResponse.json(response, { status: 400 });
   }
 
-  const verificationToken = await createEmailVerificationToken(existingUser._id, email);
-  const verificationLink = `http://localhost:3000/email-verification?token=${verificationToken}`;
-  // await sendVerificationEmail(email, verificationLink);
-  console.log(verificationLink);
+  const existingUser = await UserCollection.findOne({ email });
+
+  if (!existingUser) {
+    const response: SignInResponse = { 
+      success: false, 
+      message: "Invalid email or password", 
+      hasPortfolio: false 
+    };
+    return NextResponse.json(response, { status: 400 });
+  }
+
+  const isPasswordValid = await verifyPassword(existingUser.hashedPassword, password);
+
+  if (!isPasswordValid) {
+    const response: SignInResponse = { 
+      success: false, 
+      message: "Invalid email or password", 
+      hasPortfolio: false 
+    };
+    return NextResponse.json(response, { status: 400 });
+  }
 
   const session = await lucia.createSession(existingUser._id, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
@@ -42,7 +54,7 @@ export async function POST(req: Request) {
 
   const response: SignInResponse = {
     success: true,
-    message: "Verification Email Sent",
+    message: "Sign in successful",
     hasPortfolio: !!portfolio,
     ...(portfolio && { username: portfolio.username })
   };

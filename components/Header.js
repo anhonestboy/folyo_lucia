@@ -21,6 +21,7 @@ export default function Header({ user }) {
   const [portfolio, setPortfolio] = useState(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const checkExistingPortfolio = async () => {
       try {
@@ -40,7 +41,14 @@ export default function Header({ user }) {
     checkExistingPortfolio();
   }, [user]);
 
-
+  const [userLogged, setUserLogged] = useState(false);
+  useEffect(() => {
+    if (user) {
+      setUserLogged(true);
+    } else {
+      setUserLogged(false);
+    }
+  }, [user]);
 
   return (
     <header className="bg-background">
@@ -48,7 +56,7 @@ export default function Header({ user }) {
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2 self-start">
             <span className="sr-only">Folyo</span>
-            
+
             <span className="text-xl font-sans">Folyo</span>
           </Link>
 
@@ -75,15 +83,15 @@ export default function Header({ user }) {
             ))}
 
 
-            {user &&
+            {userLogged &&
               <SignOutButton className="text-xs uppercase font-mono tracking-widest h-4 text-muted-foreground hover:text-primary" variant="ghost" />
             }
-            {!user &&
+            {!userLogged &&
               <Link href="/sign-in" className="text-xs uppercase tracking-widest text-muted-foreground hover:text-primary">
                 Sign in
               </Link>
             }
-            {!user &&
+            {!userLogged &&
               <Link href="/sign-up" className="underline text-xs uppercase tracking-widest text-muted-foreground hover:text-primary">
                 Get started
               </Link>
