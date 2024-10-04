@@ -34,9 +34,9 @@ export default function Home({ user }) {
   //   router.push("/" + portfolio.username);
   // }
 
-  if (user && !portfolio) {
-    router.push("/create-portfolio");
-  }
+  // if (user && !portfolio) {
+  //   router.push("/create-portfolio");
+  // }
 
   return (
     <main>

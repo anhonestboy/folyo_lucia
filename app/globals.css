@@ -73,3 +73,9 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+.squircle {
+  mask-image: paint(smooth-corners);
+  -webkit-mask-image: paint(smooth-corners);
+  background: #d01257; /* So you can see it */
+}

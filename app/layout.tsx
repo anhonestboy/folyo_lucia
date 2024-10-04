@@ -6,6 +6,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import Header from "@/components/Header";
 import { validateRequest } from "@/lib/auth";
+import Script from 'next/script'
 
 const inter = Bricolage_Grotesque({ subsets: ["latin"] });
 const ibmPlexMono = IBM_Plex_Mono({

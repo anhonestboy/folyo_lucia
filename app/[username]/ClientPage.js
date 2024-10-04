@@ -122,7 +122,7 @@ const ClientPage = () => {
       <div className='h-32 w-32 rounded-full bg-gray-200 py-8 border-8  hover:scale-105 duration-200 transition-all' />
       <h1 className="text-6xl font-light mb-6 font-serif text-center animate-fadeInUp">Username</h1>
       <p className='w-[80vw] md:w-[40vw] text-justify animate-fadeInUp delay-150'>Et labore ea veniam nostrud consequat eu sunt quis non reprehenderit excepteur irure duis. Duis qui fugiat aliquip enim. Laborum commodo tempor consectetur est nostrud irure veniam minim. Cupidatat pariatur aliqua incididunt elit proident sint.</p>
-
+    
       <div className='pt-8'>
         <MasonryGallery images={images} />
       </div>
